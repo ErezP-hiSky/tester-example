@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "/static/css/main.1813447e.chunk.css",
+    "main.js": "/static/js/main.ad258468.chunk.js",
+    "main.js.map": "/static/js/main.ad258468.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.d1000aca.js",
+    "runtime-main.js.map": "/static/js/runtime-main.d1000aca.js.map",
+    "static/js/2.b63d6f4a.chunk.js": "/static/js/2.b63d6f4a.chunk.js",
+    "static/js/2.b63d6f4a.chunk.js.map": "/static/js/2.b63d6f4a.chunk.js.map",
+    "static/js/3.8abe2b68.chunk.js": "/static/js/3.8abe2b68.chunk.js",
+    "static/js/3.8abe2b68.chunk.js.map": "/static/js/3.8abe2b68.chunk.js.map",
+    "index.html": "/index.html",
+    "static/css/main.1813447e.chunk.css.map": "/static/css/main.1813447e.chunk.css.map",
+    "static/js/2.b63d6f4a.chunk.js.LICENSE.txt": "/static/js/2.b63d6f4a.chunk.js.LICENSE.txt",
+    "static/media/hiskyLogo.3bd4f31e.PNG": "/static/media/hiskyLogo.3bd4f31e.PNG",
+    "static/media/man1.3dcdf4f2.PNG": "/static/media/man1.3dcdf4f2.PNG",
+    "static/media/main.scss": "/static/media/terminal_lake.c97f64a0.jpg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.d1000aca.js",
+    "static/js/2.b63d6f4a.chunk.js",
+    "static/css/main.1813447e.chunk.css",
+    "static/js/main.ad258468.chunk.js"
+  ]
+}
