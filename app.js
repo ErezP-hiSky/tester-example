@@ -1,13 +1,19 @@
 var createError = require("http-errors")
 const bodyParser = require('body-parser');
-var express = require("express")
-var path = require("path")
+var express = require("express");
+const connectDB = require('./config/db');
+var path = require("path");
 const mongoose = require('mongoose');
 var cookieParser = require("cookie-parser")
 var logger = require("morgan")
 
-var indexRouter = require("./routes/index")
-var usersRouter = require("./routes/users")
+// Define routes
+var indexRouter = require("./routes/index");
+var usersRouter = require("./routes/users");
+var authUsersRouter = require('./routes/auth_users');
+var authRouter = require('./routes/auth');
+var articleRouter = require("./routes/article");
+var generalRouter = require("./routes/generalData");
 
 var app = express()
 
@@ -28,140 +34,23 @@ app.use(cookieParser())
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static(path.join(__dirname, "public")))
 
-app.use("/", indexRouter)
-app.use("/users", usersRouter)
-
-
+app.use("/", indexRouter);
+app.use("/api/users", usersRouter);
+app.use("/api/auth_users", authUsersRouter);
+app.use("/api/auth", authRouter);
+app.use("/articles", articleRouter);
+app.use("/general-test-data", generalRouter);
 
 
 const mongoPwd = "MG841752!";
 const dbName = "testDB";
 const mongoConString = `mongodb+srv://testerDBuser:${mongoPwd}@cluster0.nfwjm.mongodb.net/${dbName}`;
-mongoose.connect(mongoConString, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(mongoConString, { useNewUrlParser: true, useUnifiedTopology: true,
+    useCreateIndex: true })
+    .then(() => console.log('MongoDB connected...'))
     .catch(err => console.log(`Error in connection or no internet... The error is: ${err}`));
 
-// ----------------------------------- Users -------------------
-const userSchema = {
-    name: String,
-    address: String
-};
 
-const User = mongoose.model("User", userSchema);
-
-app.route("/users")
-
-.get(function(req, res) {
-    
-    User.find(function(err, foundUsers) {
-        if (!err) {
-            res.send(foundUsers);
-        } else {
-            res.send("The error is: " + err);
-        }
-    });
-})
-
-.post(function(req, res){
-    const newUser = new User({
-        name: req.body.title,
-        address: req.body.content
-    });
-    console.log(newUser)
-    newUser.save(function(err) {
-        if(!err){
-            res.send("successfully saved");
-        } else {
-            res.send("The error is: " + err);
-        }
-    });
-});
-
-// ----------------------------------- Articles -------------------
-const ArticleSchema = {
-    title: String,
-    content: String
-};
-
-const Article = mongoose.model("Article", ArticleSchema);
-
-app.route("/articles")
-
-.get(function(req, res) {
-    Article.find(function(err, foundArticles) {
-        if (!err) {
-            res.send(foundArticles);
-        } else {
-            res.send("The error is: " + err);
-        }
-    });
-})
-
-.post(function(req, res) {
-    
-    const newArticle = new Article({
-        title: req.body.title,
-        content: req.body.content
-    });
-    console.log(newArticle)
-    newArticle.save(function(err) {
-        if(!err){
-            res.send("successfully saved");
-        } else {
-            res.send("The error is: " + err);
-        }
-    });
-});
-
-
-// ----------------------------------- general_tester_data -------------------
-const generalTestDataSchema = {
-    _id: Number,
-    testerName: Number,
-    testDate: Date,
-    unitSN: String,
-    finalTestResult: String
-};
-generalTestDataCollectionName = "general_tester_data";
-
-const GeneralTestDataTemp = mongoose.model("GeneralTestDataTemp", generalTestDataSchema, generalTestDataCollectionName);
-
-app.route("/general-test-data")
-
-.get(function(req, res) {
-    GeneralTestDataTemp.find(function(err, foundGeneralTestDataTemp) {
-        if (!err) {
-            res.send(foundGeneralTestDataTemp);
-        } else {
-            res.send("The error is: " + err);
-        }
-    });
-});
-
-app.route("/general-test-data/findbyUnitSN/:unitSN")
-
-    .get(function (req, res) {
-        // console.log("/general-test-data/findbyUnitSN");
-        // console.log(req.params.unitSN);
-        GeneralTestDataTemp.find({unit_SN: req.params.unitSN, final_test_result: {$ne: "started"}}, function(err, foundGeneralTestDataTemp) {
-            if (!err) {
-                res.send(foundGeneralTestDataTemp);
-            } else {
-                res.send("The error is: " + err);
-            }
-        });
-    });
-
-app.route("/general-test-data/findbyid/:collectionId")
-    
-    .get(function (req, res) {
-        GeneralTestDataTemp.findById(req.params.collectionId, function(err, foundGeneralTestDataTemp) {
-            if (!err) {
-                res.send(foundGeneralTestDataTemp);
-            } else {
-                res.send("The error is: " + err);
-            }
-        });
-    });
 
 // ----------------------------------- AmbientTemp -------------------
 const AmbientTempSchema = {
